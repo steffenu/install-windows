@@ -1,0 +1,33 @@
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'Select an Item'
+$form.Size = New-Object System.Drawing.Size(300,200)
+$form.StartPosition = 'CenterScreen'
+
+$listBox = New-Object System.Windows.Forms.ListBox
+$listBox.Location = New-Object System.Drawing.Point(10,10)
+$listBox.Size = New-Object System.Drawing.Size(260,100)
+
+# Populate the list box
+$listBox.Items.Add('Item 1')
+$listBox.Items.Add('Item 2')
+$listBox.Items.Add('Item 3')
+
+$form.Controls.Add($listBox)
+
+$listBox.Add_MouseUp({
+    $item = $listBox.SelectedItem
+    $response = [System.Windows.Forms.MessageBox]::Show("You selected: $item. Click OK to confirm.", "Confirm Selection", [System.Windows.Forms.MessageBoxButtons]::OKCancel)
+    if ($response -eq [System.Windows.Forms.DialogResult]::OK) {
+        # Execute another line of code upon confirmation
+        [System.Windows.Forms.MessageBox]::Show("Confirmation: You have selected $item.")
+        # If you want to output to the console instead, you can use Write-Output or similar cmdlets here
+        # For example: Write-Output "Confirmation: You have selected $item."
+        # Note: Write-Output might not directly display in the PowerShell console when running from a Windows Forms application.
+    }
+})
+
+$form.ShowDialog()
+

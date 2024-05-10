@@ -1,0 +1,6 @@
+# Check if the environment variable is set
+if (-not [string]::IsNullOrEmpty($env:MSSQL_DB_STRING)) {
+    Write-Output "Environment variable MSSQL_DB_STRING is set to: $($env:MSSQL_DB_STRING)"
+} else {
+    Write-Output "Environment variable MSSQL_DB_STRING is not set."
+}

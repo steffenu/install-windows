@@ -1,0 +1,32 @@
+# Load the necessary assembly for Windows Forms
+Add-Type -AssemblyName System.Windows.Forms
+
+# Create a new form
+$form = New-Object System.Windows.Forms.Form
+$form.Text = 'Environment Variable Value'
+$form.Size = New-Object System.Drawing.Size(400,150)
+$form.StartPosition = 'CenterScreen'
+
+# Create a TextBox to show the environment variable
+$textBox = New-Object System.Windows.Forms.TextBox
+$textBox.Location = New-Object System.Drawing.Point(10,10)
+$textBox.Size = New-Object System.Drawing.Size(360,20)
+$textBox.ReadOnly = $true
+$textBox.Multiline = $true
+$textBox.ScrollBars = 'Vertical'
+$textBox.Text = if (-not [string]::IsNullOrEmpty($env:MSSQL_DB_STRING)) { "Environment variable MSSQL_DB_STRING is set to: $($env:MSSQL_DB_STRING)" } else { "Environment variable MSSQL_DB_STRING is not set." }
+
+# Add the TextBox to the form
+$form.Controls.Add($textBox)
+
+# Create an OK Button to close the form
+$okButton = New-Object System.Windows.Forms.Button
+$okButton.Location = New-Object System.Drawing.Point(310,80)
+$okButton.Size = New-Object System.Drawing.Size(75,23)
+$okButton.Text = 'OK'
+$okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $okButton
+$form.Controls.Add($okButton)
+
+# Show the form
+$form.ShowDialog() | Out-Null

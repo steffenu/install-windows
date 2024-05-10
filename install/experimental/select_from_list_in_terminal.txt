@@ -1,0 +1,41 @@
+function Select-ItemFromList {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string[]]$Items
+    )
+
+    $cursorPosition = 0
+
+    while ($true) {
+        Clear-Host
+
+        for ($i = 0; $i -lt $Items.Length; $i++) {
+            if ($i -eq $cursorPosition) {
+                Write-Host "→ $($Items[$i])" -ForegroundColor Cyan
+            } else {
+                Write-Host "  $($Items[$i])"
+            }
+        }
+
+        $keyInfo = [System.Console]::ReadKey($true)
+
+        switch ($keyInfo.Key) {
+            'UpArrow' {
+                if ($cursorPosition -gt 0) { $cursorPosition-- }
+            }
+            'DownArrow' {
+                if ($cursorPosition -lt $Items.Length - 1) { $cursorPosition++ }
+            }
+            'Enter' {
+                Clear-Host
+                Write-Host "You selected: $($Items[$cursorPosition])" -ForegroundColor Green
+                return $Items[$cursorPosition]
+            }
+        }
+    }
+}
+
+# Example usage
+$items = @('Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5')
+$selectedItem = Select-ItemFromList -Items $items
+Write-Host "Selected item: $selectedItem"
